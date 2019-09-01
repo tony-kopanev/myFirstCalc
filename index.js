@@ -21,7 +21,7 @@ class Calculator {
           button.className = 'sign';
 
         button.onclick = () => {
-          const isDouble = !!(this.doubleSign(input.value) && this.doubleSign(input.value) !== char);
+          const isDouble = !!(this.doubleSign(input.value) && (this.doubleSign(input.value) !== char || this.doubleLastSign(input.value, char)));
           if(this.doubleSign(input.value) === true) input.value = ''; 
           
           switch(char) {
@@ -79,16 +79,24 @@ class Calculator {
   doubleDotted(str, sign) {
     console.log('[isNotSign]', !!(!sign));
     console.log('[isFiniteStr]', isFinite(str));
-    //console.log('[isFiniteStrLastChar]', !isFinite(str.slice(str.length-1)));
     if(!sign) return false;
     if(isFinite(str)) return false;
-    //if(!isFinite(str.slice(str.length-1))) return false;
 
     const lastOperand = str.split(sign).pop();
     console.log('[lastOperand]', lastOperand);
     if(lastOperand.includes('.')) return false;
     return true;
   }
+
+  doubleLastSign(str, sign) {
+    if(sign !== '+' && sign !== '-' && sign !== '*' && sign !== '/') return false;
+    if(str.length < 1) return false;
+
+    if(str.slice(str.length-1) === sign) return true;
+    return false;
+  }
+
+
 };
 
 new Calculator('root');
