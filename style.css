@@ -55,3 +55,37 @@
 .calculator .sign {
   background-color: #ff9c00;
 }
+
+.message {
+  max-width: 150px;
+  background-color: orangered;
+  padding: 20px;
+  font-size: 1.1rem;
+  color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 3px 5px #111;
+  /* margin-left: 50px; */
+  position: absolute;
+  animation: fadeOut 300ms ease-in forwards;
+}
+
+.message::before {
+  content: '';
+  top: calc(50% - 15px / 2);
+  left: calc(-15px / 2);
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  background-color: orangered;
+  transform: rotate(45deg);
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1;
+  }
+}

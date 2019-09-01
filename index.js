@@ -49,6 +49,41 @@ class Calculator {
         }
         if(input.value === '0' && isFinite(char)) input.value = '';
         input.value += char;
+      });
+
+      div.addEventListener('mouseover', event => {
+        if(event.target.tagName !== 'BUTTON') return;
+        
+        const char = event.target.dataset.char;
+        if(isFinite(char) || char === '.') return;
+        
+        const coords = event.target.getBoundingClientRect(); 
+
+        const message = document.createElement('div');
+        message.className = 'message';
+
+        const customMessages = {
+          '+': 'If you press this button, you will get the addition',
+          '-': 'If you press this button, you will get the subtraction',
+          '*': 'If you press this button, you will get the multiplication',
+          '/': 'If you press this button, you will get the division',
+          '=': 'If you press this button, you will calculate result',
+          'c': 'If you press this button, you will get clear the result',
+        }
+        message.textContent = customMessages[char];
+        message.style.top = `${coords.top - coords.height / 2}px`;
+        message.style.left = `${coords.right + 25}px`;
+        document.body.append(message);
+      });
+
+      div.addEventListener('mouseout', event => {
+        if(event.target.tagName !== 'BUTTON') return;
+        
+        const char = event.target.dataset.char;
+        if(isFinite(char) || char === '.') return;
+        
+        const message = document.querySelector('.message');
+        if(document.body.contains(message)) message.remove();
       })
 
       div.append(input);
