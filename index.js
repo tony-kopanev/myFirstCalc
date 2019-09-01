@@ -19,33 +19,37 @@ class Calculator {
         if(char === 'c') button.className = 'clear';
         if(char === '+' || char === '-' || char === '/' || char === '*')
           button.className = 'sign';
-
-        button.onclick = () => {
-          const isDouble = !!(this.doubleSign(input.value) && (this.doubleSign(input.value) !== char || this.doubleLastSign(input.value, char)));
-          if(this.doubleSign(input.value) === true) input.value = ''; 
-          
-          switch(char) {
-            case '+':
-            case '-':
-            case '*':
-            case '/': if(isDouble) return; sign = char; break;
-            case '=': return input.value = this.calculate(input.value, sign);
-          }
-
-          if(input.value.includes('.') && char === '.')
-            if(!this.doubleDotted(input.value, sign)) return;
-          if(char === 'c') {
-            input.value = 0;
-            return;
-          }
-          if(input.value === '0' && isFinite(char)) input.value = '';
-          input.value += char;
-        };
+        button.dataset.char = char;
 
         return button;
       });
 
       div.className = 'calculator';
+
+      div.addEventListener('click', event => {
+        if(event.target.tagName !== 'BUTTON') return;
+        const char = event.target.dataset.char;
+
+        const isDouble = !!(this.doubleSign(input.value) && (this.doubleSign(input.value) !== char || this.doubleLastSign(input.value, char)));
+        if(this.doubleSign(input.value) === true) input.value = ''; 
+        
+        switch(char) {
+          case '+':
+          case '-':
+          case '*':
+          case '/': if(isDouble) return; sign = char; break;
+          case '=': return input.value = this.calculate(input.value, sign);
+        }
+
+        if(input.value.includes('.') && char === '.')
+          if(!this.doubleDotted(input.value, sign)) return;
+        if(char === 'c') {
+          input.value = 0;
+          return;
+        }
+        if(input.value === '0' && isFinite(char)) input.value = '';
+        input.value += char;
+      })
 
       div.append(input);
       for(const btn of buttons) div.append(btn);
@@ -77,13 +81,10 @@ class Calculator {
   };
 
   doubleDotted(str, sign) {
-    console.log('[isNotSign]', !!(!sign));
-    console.log('[isFiniteStr]', isFinite(str));
     if(!sign) return false;
     if(isFinite(str)) return false;
 
     const lastOperand = str.split(sign).pop();
-    console.log('[lastOperand]', lastOperand);
     if(lastOperand.includes('.')) return false;
     return true;
   }
