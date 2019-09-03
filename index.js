@@ -50,7 +50,8 @@ class Calculator {
         if(input.value === '0' && isFinite(char)) input.value = '';
         input.value += char;
       });
-
+      
+      let timer = 0;
       div.addEventListener('mouseover', event => {
         if(event.target.tagName !== 'BUTTON') return;
         
@@ -61,6 +62,7 @@ class Calculator {
 
         const message = document.createElement('div');
         message.className = 'message';
+        
 
         const customMessages = {
           '+': 'If you press this button, you will get the addition',
@@ -73,7 +75,8 @@ class Calculator {
         message.textContent = customMessages[char];
         message.style.top = `${coords.top - coords.height / 2}px`;
         message.style.left = `${coords.right + 25}px`;
-        document.body.append(message);
+        timer = setTimeout(() => document.body.append(message), 1000);
+        //document.body.append(message);
       });
 
       div.addEventListener('mouseout', event => {
@@ -81,9 +84,13 @@ class Calculator {
         
         const char = event.target.dataset.char;
         if(isFinite(char) || char === '.') return;
+        if(timer) clearTimeout(timer);
         
-        const message = document.querySelector('.message');
-        if(document.body.contains(message)) message.remove();
+        const message = document.querySelectorAll('.message');
+        for(const ms of message){
+          ms.classList.add('fade-in');
+          setTimeout(() => ms.remove(), 300);
+        }
       })
 
       div.append(input);
