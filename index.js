@@ -73,10 +73,9 @@ class Calculator {
           'c': 'If you press this button, you will get clear the result',
         }
         message.textContent = customMessages[char];
-        message.style.top = `${coords.top - coords.height / 2}px`;
+        message.style.top = `${window.pageYOffset + coords.top - coords.height / 2}px`;
         message.style.left = `${coords.right + 25}px`;
         timer = setTimeout(() => document.body.append(message), 1000);
-        //document.body.append(message);
       });
 
       div.addEventListener('mouseout', event => {
